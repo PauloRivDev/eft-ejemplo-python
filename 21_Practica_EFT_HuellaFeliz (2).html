@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica EFT — Veterinaria HuellaFeliz | FPY1101</title>
+    <style>
+        :root {
+            --duoc-blue:   #002d56;
+            --duoc-yellow: #ffc20e;
+            --dark-grey:   #333333;
+            --white:       #ffffff;
+            --accent-blue: #0056b3;
+            --green-bg:    #d4edda;
+            --orange-bg:   #fff3e0;
+            --red-bg:      #fdf2f2;
+            --purple:      #4a148c;
+            --purple-bg:   #f3e5f5;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.8; color: var(--dark-grey); background-color: #e9ecef; margin: 0; padding: 0; }
+        .navbar { background-color: var(--duoc-blue); height: 10px; width: 100%; }
+        header { background-color: var(--white); border-bottom: 4px solid var(--duoc-yellow); box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; align-items: stretch; }
+        .header-num { background-color: var(--duoc-blue); color: var(--duoc-yellow); min-width: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 20px; }
+        .header-num .num { font-size: 3.4rem; font-weight: 900; line-height: 1; }
+        .header-num .label { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+        .header-info { padding: 28px 36px; }
+        .course-tag { display: inline-block; background-color: var(--duoc-yellow); color: var(--duoc-blue); font-size: 0.78rem; font-weight: bold; padding: 3px 12px; border-radius: 3px; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
+        header h1 { color: var(--duoc-blue); margin: 0 0 8px 0; font-size: 1.7rem; }
+        header h1 em { color: var(--accent-blue); font-style: normal; }
+        .meta { color: #555; font-size: 0.93rem; }
+        .meta span { color: var(--accent-blue); font-weight: bold; }
+        .intro-banner { background-color: var(--duoc-blue); color: var(--white); text-align: center; padding: 16px 30px; font-size: 0.98rem; line-height: 1.6; }
+        .intro-banner strong { color: var(--duoc-yellow); }
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .section-divider { background-color: var(--duoc-blue); color: var(--duoc-yellow); padding: 13px 20px; font-size: 1.05rem; font-weight: bold; border-radius: 4px; margin: 40px 0 20px 0; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; gap: 14px; }
+        .section-divider .sec-num { background-color: var(--duoc-yellow); color: var(--duoc-blue); width: 32px; height: 32px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.1rem; flex-shrink: 0; }
+        .card { background: var(--white); padding: 32px 38px; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-bottom: 24px; }
+        h2 { color: var(--duoc-blue); border-left: 5px solid var(--duoc-yellow); padding-left: 15px; margin-top: 0; font-size: 1.35rem; }
+        h3 { color: var(--accent-blue); margin-top: 26px; margin-bottom: 6px; font-size: 1.08rem; }
+        p, li { font-size: 1rem; text-align: justify; }
+        ul, ol { padding-left: 22px; }
+        li { margin-bottom: 6px; }
+        .badge      { display: inline-block; background-color: var(--duoc-blue); color: var(--duoc-yellow); padding: 5px 16px; border-radius: 50px; font-weight: bold; font-size: 0.85rem; margin-bottom: 14px; }
+        .badge-fn   { display: inline-block; background-color: var(--accent-blue); color: #fff; padding: 5px 16px; border-radius: 50px; font-weight: bold; font-size: 0.85rem; margin-bottom: 14px; }
+        .badge-main { display: inline-block; background-color: #1a6b3c; color: #fff; padding: 5px 16px; border-radius: 50px; font-weight: bold; font-size: 0.85rem; margin-bottom: 14px; }
+        .info-box    { background-color: #e7f3ff; border-left: 5px solid var(--accent-blue); padding: 14px 18px; margin: 16px 0; border-radius: 0 4px 4px 0; font-size: 0.96rem; }
+        .tip-box     { background-color: var(--green-bg); border-left: 5px solid #28a745; padding: 14px 18px; margin: 16px 0; border-radius: 0 4px 4px 0; font-size: 0.96rem; }
+        .warning-box { background-color: var(--orange-bg); border-left: 5px solid #e6a817; padding: 14px 18px; margin: 16px 0; border-radius: 0 4px 4px 0; font-size: 0.96rem; }
+        .error-box   { background-color: var(--red-bg); border-left: 5px solid #7b0000; padding: 14px 18px; margin: 16px 0; border-radius: 0 4px 4px 0; font-size: 0.96rem; }
+        .why-box     { background-color: var(--purple-bg); border-left: 5px solid var(--purple); padding: 14px 18px; margin: 16px 0; border-radius: 0 4px 4px 0; font-size: 0.96rem; }
+        .think-box   { background-color: #fff8e1; border-left: 5px solid #f9a825; padding: 14px 18px; margin: 16px 0; border-radius: 0 4px 4px 0; font-size: 0.96rem; }
+        .box-title { font-weight: bold; display: block; margin-bottom: 5px; font-size: 0.93rem; }
+        pre { background-color: #1e1e1e; color: #d4d4d4; padding: 20px 24px; border-radius: 6px; overflow-x: auto; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.88rem; line-height: 1.7; margin: 12px 0; box-shadow: inset 0 0 8px rgba(0,0,0,0.4); }
+        code { background-color: #f1f1f1; padding: 2px 7px; border-radius: 4px; font-family: 'Consolas', monospace; color: #d63384; font-size: 0.92rem; }
+        .kw  { color: #569cd6; }
+        .fn  { color: #dcdcaa; }
+        .st  { color: #ce9178; }
+        .cm  { color: #6a9955; font-style: italic; }
+        .nm  { color: #b5cea8; }
+        .var { color: #9cdcfe; }
+        .bi  { color: #4ec9b0; }
+        .op  { color: #d4d4d4; }
+        .fn-block { border: 2px solid var(--duoc-yellow); border-radius: 8px; margin-bottom: 32px; overflow: hidden; }
+        .fn-block.main-block { border-color: #28a745; }
+        .fn-header { background-color: var(--duoc-blue); color: var(--duoc-yellow); padding: 12px 20px; font-weight: bold; font-size: 1rem; display: flex; align-items: center; gap: 12px; }
+        .fn-header.main-header { background-color: #1a6b3c; color: #fff; }
+        .fn-num { background-color: var(--duoc-yellow); color: var(--duoc-blue); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.95rem; flex-shrink: 0; }
+        .fn-num.main-num { background-color: #fff; color: #1a6b3c; }
+        .fn-body { padding: 22px 26px; background-color: #fffdf5; }
+        .fn-body.main-body { background-color: #f0fff4; }
+        table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.96rem; }
+        table th { background-color: var(--duoc-blue); color: var(--white); padding: 9px 13px; text-align: left; }
+        table td { border: 1px solid #dee2e6; padding: 8px 13px; vertical-align: top; }
+        table tr:nth-child(even) td { background-color: #f8f9fa; }
+        .github-box { background-color: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 20px 26px; margin: 20px 0; display: flex; align-items: center; gap: 18px; }
+        .github-icon { font-size: 2.2rem; }
+        .github-info { flex: 1; }
+        .github-info p { margin: 0; color: #c9d1d9; font-size: 0.95rem; line-height: 1.6; }
+        .github-info a { color: #58a6ff; text-decoration: none; font-weight: bold; font-size: 1rem; }
+        .flow-diagram { display: flex; flex-direction: column; gap: 6px; margin: 18px 0; }
+        .flow-step { background-color: #f0f4ff; border: 1px solid #c5d3f0; border-radius: 6px; padding: 10px 18px; display: flex; align-items: center; gap: 14px; font-size: 0.95rem; }
+        .flow-step .flow-icon { font-size: 1.3rem; flex-shrink: 0; }
+        .flow-arrow { text-align: center; color: var(--accent-blue); font-size: 1.2rem; font-weight: bold; }
+        .dict-visual { background-color: #f8f9fa; border: 2px solid #dee2e6; border-radius: 8px; padding: 20px 24px; margin: 16px 0; font-family: 'Consolas', monospace; font-size: 0.87rem; line-height: 2; }
+        .dict-key { color: #ce9178; }
+        .dict-val-str { color: #a5d6ff; }
+        .dict-val-num { color: #b5cea8; }
+        .dict-val-bool { color: #569cd6; }
+        .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+        .concept-card { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; padding: 16px 18px; }
+        .concept-card h4 { margin: 0 0 8px 0; color: var(--duoc-blue); font-size: 0.95rem; }
+        .concept-card p { margin: 0; font-size: 0.92rem; text-align: left; }
+        footer { text-align: center; padding: 36px; font-size: 0.87rem; border-top: 1px solid #dee2e6; margin-top: 20px; background-color: var(--duoc-blue); color: #aaa; }
+        footer strong { color: var(--duoc-yellow); }
+        footer a { color: var(--duoc-yellow); }
+        @media (max-width: 640px) { .concept-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="navbar"></div>
+
+<header>
+    <div class="header-num">
+        <div class="num">21</div>
+        <div class="label">Guía</div>
+    </div>
+    <div class="header-info">
+        <div class="course-tag">FPY1101 · 008D</div>
+        <h1>Práctica EFT — <em>Veterinaria "HuellaFeliz"</em></h1>
+        <p class="meta">Sesión 18 &nbsp;|&nbsp; Tema: <span>Listas de Diccionarios · Funciones · Menú</span> &nbsp;|&nbsp; Modalidad: Práctica tipo examen</p>
+    </div>
+</header>
+
+<div class="intro-banner">
+    Este ejercicio tiene la <strong>misma estructura</strong> que el Examen Final Transversal (EFT).<br>
+    Lee primero todo el enunciado y el contexto antes de escribir una sola línea de código.
+</div>
+
+<div class="container">
+
+    <!-- ===== GITHUB ===== -->
+    <div class="section-divider"><div class="sec-num">↓</div> Código completo disponible en GitHub</div>
+
+    <div class="card">
+        <div class="github-box">
+            <div class="github-icon">🐙</div>
+            <div class="github-info">
+                <a href="https://github.com/ProfeMike-sudo/fpy1101-ejercicios-eft" target="_blank">
+                    github.com/ProfeMike-sudo/fpy1101-ejercicios-eft
+                </a>
+                <p>Repositorio del curso con los 4 ejercicios de práctica. La solución completa está en <code>ejercicio1_mascotas/sistema_mascotas.py</code>. Descárgalo, ejecútalo y sigue esta guía al mismo tiempo para entender cada parte.</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <span class="box-title">💡 ¿Cómo usar esta guía?</span>
+            Sugerencia: lee primero las secciones 1, 2 y 3 (contexto, datos y flujo) completas <strong>antes</strong> de ver el código. Entiende el problema como si no supieras nada de Python, y recién después pasa a la solución.
+        </div>
+    </div>
+
+    <!-- ===== QUÉ CONSTRUIREMOS ===== -->
+    <div class="section-divider"><div class="sec-num">1</div> ¿Qué vamos a construir?</div>
+
+    <div class="card">
+        <span class="badge">CONTEXTO DEL PROBLEMA</span>
+        <h2>La veterinaria "HuellaFeliz"</h2>
+        <p>
+            Imagina que trabajas para una veterinaria pequeña. Antes de tener este programa, la veterinaria anotaba en papel el nombre de cada mascota, su especie, edad, peso y si estaba esterilizada. Ese papel se perdía, era difícil de buscar y no se podía actualizar rápido.
+        </p>
+        <p>
+            Tu trabajo es crear un <strong>programa en Python</strong> que reemplace ese papel. El programa debe permitirle al empleado de la veterinaria:
+        </p>
+        <ul>
+            <li><strong>Agregar</strong> una mascota nueva al registro.</li>
+            <li><strong>Buscar</strong> una mascota por nombre para ver sus datos.</li>
+            <li><strong>Eliminar</strong> una mascota del registro (por ejemplo, si se fue de cliente).</li>
+            <li><strong>Actualizar automáticamente</strong> cuáles mascotas necesitan control geriátrico (las de 5 años o más).</li>
+            <li><strong>Mostrar</strong> todas las mascotas registradas.</li>
+        </ul>
+
+        <div class="think-box">
+            <span class="box-title">🤔 Antes de programar, piensa como usuario</span>
+            El empleado de la veterinaria <strong>no sabe nada de Python</strong>. Solo verá un menú con números. Cuando elige una opción, el programa le pide los datos, los valida y le avisa si cometió un error. Tú, como programador, debes asegurarte de que el programa sea <em>a prueba de errores humanos</em>.
+        </div>
+
+        <h3>¿Cómo se ve el programa en ejecución?</h3>
+        <p>Esto es lo que verá el empleado cuando el programa esté listo:</p>
+        <pre>========== MENU PRINCIPAL ==========
+1. Agregar mascota
+2. Buscar mascota
+3. Eliminar mascota
+4. Actualizar estado de atencion
+5. Mostrar todas las mascotas
+6. Salir
+=====================================
+Ingrese su opcion: 1
+Ingrese nombre de la mascota: Fido
+Ingrese especie (Perro / Gato / Ave): Perro
+Ingrese edad en anios (entero mayor a 0): 7
+Ingrese peso en kg (numero mayor a 0): 12.5
+Esta esterilizado? (s/n): s
+Mascota agregada correctamente.</pre>
+    </div>
+
+    <!-- ===== CÓMO ALMACENA DATOS ===== -->
+    <div class="section-divider"><div class="sec-num">2</div> ¿Cómo almacena los datos el programa?</div>
+
+    <div class="card">
+        <span class="badge">ESTRUCTURA DE DATOS</span>
+        <h2>Lista de diccionarios — el "archivador" del programa</h2>
+        <p>
+            Para guardar los datos de todas las mascotas usamos una <strong>lista de diccionarios</strong>. Antes de escribir código, debes entender bien qué significa esto.
+        </p>
+
+        <h3>¿Qué es un diccionario en este contexto?</h3>
+        <p>
+            Un diccionario es como una <strong>ficha de registro</strong> para una mascota. Tiene campos con nombre (las claves) y los datos de esa mascota (los valores). Cada mascota tiene su propia ficha:
+        </p>
+
+        <div class="dict-visual">
+            {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dict-key">"nombre"</span>      : <span class="dict-val-str">"Fido"</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dict-key">"especie"</span>     : <span class="dict-val-str">"Perro"</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dict-key">"edad"</span>        : <span class="dict-val-num">7</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dict-key">"peso"</span>        : <span class="dict-val-num">12.5</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dict-key">"esterilizado"</span>: <span class="dict-val-bool">True</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dict-key">"atendido"</span>    : <span class="dict-val-bool">False</span><br>
+            }
+        </div>
+
+        <h3>¿Qué es la lista?</h3>
+        <p>
+            La lista es el <strong>archivador</strong> que guarda todas las fichas juntas. Cuando el programa parte, la lista está vacía (<code>[]</code>). Cada vez que el usuario elige "Agregar mascota", se crea una ficha nueva y se mete al archivador.
+        </p>
+
+        <div class="dict-visual">
+            <span style="color:#6a9955; font-style:italic;"># listaMascotas con 2 mascotas registradas</span><br>
+            [<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;{ <span class="dict-key">"nombre"</span>: <span class="dict-val-str">"Fido"</span>, <span class="dict-key">"especie"</span>: <span class="dict-val-str">"Perro"</span>, <span class="dict-key">"edad"</span>: <span class="dict-val-num">7</span>, ... },<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;{ <span class="dict-key">"nombre"</span>: <span class="dict-val-str">"Luna"</span>, <span class="dict-key">"especie"</span>: <span class="dict-val-str">"Gato"</span>, <span class="dict-key">"edad"</span>: <span class="dict-val-num">3</span>, ... }<br>
+            ]
+        </div>
+
+        <h3>Detalle de cada campo</h3>
+        <table>
+            <thead><tr><th>Campo</th><th>Tipo</th><th>¿Qué significa?</th><th>Restricción</th></tr></thead>
+            <tbody>
+                <tr><td><code>"nombre"</code></td><td>str</td><td>Nombre de la mascota</td><td>No vacío ni solo espacios</td></tr>
+                <tr><td><code>"especie"</code></td><td>str</td><td>Tipo de animal</td><td>Solo <code>"Perro"</code>, <code>"Gato"</code> o <code>"Ave"</code></td></tr>
+                <tr><td><code>"edad"</code></td><td>int</td><td>Años de vida</td><td>Entero mayor a 0</td></tr>
+                <tr><td><code>"peso"</code></td><td>float</td><td>Peso en kilogramos</td><td>Número mayor a 0.0 (puede ser decimal)</td></tr>
+                <tr><td><code>"esterilizado"</code></td><td>bool</td><td>¿Está esterilizado?</td><td>El usuario escribe "s" o "n"; el programa lo convierte a True/False</td></tr>
+                <tr><td><code>"atendido"</code></td><td>bool</td><td>¿Requiere control geriátrico?</td><td>Siempre inicia en <code>False</code>. Se actualiza automáticamente con la opción 4</td></tr>
+            </tbody>
+        </table>
+
+        <div class="why-box">
+            <span class="box-title">🔵 ¿Por qué "atendido" inicia siempre en False?</span>
+            Cuando una mascota se registra por primera vez, aún no sabemos si necesita control. El programa aplica la regla de forma masiva solo cuando el usuario elige la opción 4. Por eso al crear la ficha siempre ponemos <code>"atendido": False</code> — la condición real se calcula después, no en el momento del registro.
+        </div>
+
+        <div class="why-box">
+            <span class="box-title">🔵 ¿Por qué "esterilizado" se guarda como True/False y no como "s"/"n"?</span>
+            La letra "s" o "n" es lo que el <em>usuario escribe</em>, pero internamente el programa trabaja con valores booleanos (<code>True</code> / <code>False</code>) porque son más precisos y fáciles de comparar. El programa convierte la letra a bool en el momento de crear la ficha.
+        </div>
+    </div>
+
+    <!-- ===== FLUJO DEL PROGRAMA ===== -->
+    <div class="section-divider"><div class="sec-num">3</div> ¿Cómo funciona el programa?</div>
+
+    <div class="card">
+        <span class="badge">FLUJO GENERAL</span>
+        <h2>El ciclo de vida del programa</h2>
+        <p>
+            El programa completo funciona como un ciclo que se repite hasta que el usuario elige "Salir". En cada vuelta del ciclo pasan exactamente tres cosas:
+        </p>
+
+        <div class="flow-diagram">
+            <div class="flow-step">
+                <span class="flow-icon">📋</span>
+                <div><strong>1. Mostrar menú</strong> — <code>mostrarMenu()</code> imprime las 6 opciones en pantalla.</div>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step">
+                <span class="flow-icon">⌨️</span>
+                <div><strong>2. Leer opción</strong> — <code>leerOpcion()</code> espera que el usuario escriba un número del 1 al 6. Si escribe algo inválido, vuelve a pedir sin explotar.</div>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step">
+                <span class="flow-icon">⚙️</span>
+                <div><strong>3. Ejecutar la acción</strong> — según el número elegido, se llama a la función correspondiente (agregar, buscar, eliminar, etc.).</div>
+            </div>
+            <div class="flow-arrow">↓ (vuelve al inicio, hasta que opcion == 6)</div>
+        </div>
+
+        <pre><span class="cm"># Así se ve el ciclo principal en código</span>
+<span class="kw">while</span> <span class="var">opcion</span> <span class="op">!=</span> <span class="nm">6</span>:
+    <span class="fn">mostrarMenu</span>()           <span class="cm"># paso 1</span>
+    <span class="var">opcion</span> <span class="op">=</span> <span class="fn">leerOpcion</span>()   <span class="cm"># paso 2</span>
+
+    <span class="kw">if</span> <span class="var">opcion</span> <span class="op">==</span> <span class="nm">1</span>:          <span class="cm"># paso 3</span>
+        <span class="fn">agregarMascota</span>(<span class="var">listaMascotas</span>)
+    <span class="kw">elif</span> <span class="var">opcion</span> <span class="op">==</span> <span class="nm">2</span>:
+        <span class="fn">buscarYMostrarMascota</span>(<span class="var">listaMascotas</span>)
+    <span class="kw">elif</span> <span class="var">opcion</span> <span class="op">==</span> <span class="nm">3</span>:
+        <span class="fn">eliminarMascota</span>(<span class="var">listaMascotas</span>)
+    <span class="kw">elif</span> <span class="var">opcion</span> <span class="op">==</span> <span class="nm">4</span>:
+        <span class="fn">actualizarEstados</span>(<span class="var">listaMascotas</span>)
+    <span class="kw">elif</span> <span class="var">opcion</span> <span class="op">==</span> <span class="nm">5</span>:
+        <span class="fn">mostrarMascotas</span>(<span class="var">listaMascotas</span>)</pre>
+
+        <div class="info-box">
+            <span class="box-title">📌 Observa que la lista se pasa como parámetro</span>
+            Nota que en cada llamada se escribe <code>agregarMascota(listaMascotas)</code>, no solo <code>agregarMascota()</code>. La lista se pasa como parámetro para que cada función pueda leerla o modificarla. Sin este parámetro, la función no sabría dónde están guardadas las mascotas.
+        </div>
+
+        <div class="tip-box">
+            <span class="box-title">💡 ¿Por qué no hay elif para la opción 6?</span>
+            Porque cuando <code>opcion == 6</code>, la condición del <code>while</code> (<code>opcion != 6</code>) se vuelve <code>False</code> y el ciclo termina por sí solo. No necesitas manejar el "Salir" con un bloque de código — el propio <code>while</code> se encarga.
+        </div>
+
+        <h3>¿Qué funciones necesita el programa?</h3>
+        <p>Un sistema de este tipo siempre necesita las mismas categorías de funciones:</p>
+        <div class="concept-grid">
+            <div class="concept-card">
+                <h4>🖥️ Menú e interfaz</h4>
+                <p><code>mostrarMenu()</code> y <code>leerOpcion()</code> — manejan todo lo que el usuario ve y escribe en el menú principal.</p>
+            </div>
+            <div class="concept-card">
+                <h4>✅ Validaciones</h4>
+                <p>Una función por cada campo: <code>validarNombre</code>, <code>validarEspecie</code>, etc. Cada una recibe un texto y dice si es válido o no.</p>
+            </div>
+            <div class="concept-card">
+                <h4>🔍 Búsqueda</h4>
+                <p><code>buscarMascota()</code> — encuentra una mascota en la lista por nombre y retorna su posición. Es reutilizada por otras funciones.</p>
+            </div>
+            <div class="concept-card">
+                <h4>📝 Operaciones CRUD</h4>
+                <p>Agregar, buscar+mostrar, eliminar, actualizar estados y mostrar todo — una función para cada acción del menú.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAPEO DE FUNCIONES ===== -->
+    <div class="section-divider"><div class="sec-num">4</div> Mapa completo de funciones</div>
+
+    <div class="card">
+        <span class="badge">ESTRATEGIA</span>
+        <h2>Identifica las 13 piezas antes de escribir código</h2>
+        <p>En el EFT, la primera pregunta que debes hacerte es: <em>¿qué funciones necesito y qué hace cada una?</em> Anótalas antes de abrir el editor.</p>
+
+        <table>
+            <thead><tr><th>#</th><th>Función</th><th>¿Qué hace?</th><th>¿Recibe?</th><th>¿Retorna?</th></tr></thead>
+            <tbody>
+                <tr><td>1</td><td><code>mostrarMenu()</code></td><td>Imprime las 6 opciones del menú</td><td>Nada</td><td>Nada</td></tr>
+                <tr><td>2</td><td><code>leerOpcion()</code></td><td>Lee y valida la opción del usuario (1–6)</td><td>Nada</td><td>int validado</td></tr>
+                <tr><td>3</td><td><code>validarNombre(nombre)</code></td><td>Verifica que el nombre no sea vacío</td><td>str</td><td>True / False</td></tr>
+                <tr><td>4</td><td><code>validarEspecie(especie)</code></td><td>Verifica que sea Perro, Gato o Ave</td><td>str</td><td>True / False</td></tr>
+                <tr><td>5</td><td><code>validarEdad(edad)</code></td><td>Verifica que sea entero mayor a 0</td><td>str</td><td>True / False</td></tr>
+                <tr><td>6</td><td><code>validarPeso(peso)</code></td><td>Verifica que sea decimal mayor a 0</td><td>str</td><td>True / False</td></tr>
+                <tr><td>7</td><td><code>validarEsterilizado(resp)</code></td><td>Verifica que sea "s" o "n"</td><td>str</td><td>True / False</td></tr>
+                <tr><td>8</td><td><code>buscarMascota(lista, nombre)</code></td><td>Busca por nombre, retorna la posición en la lista</td><td>list + str</td><td>int (pos o -1)</td></tr>
+                <tr><td>9</td><td><code>agregarMascota(lista)</code></td><td>Pide datos, valida todo, crea y agrega la ficha</td><td>list</td><td>Nada</td></tr>
+                <tr><td>10</td><td><code>buscarYMostrarMascota(lista)</code></td><td>Pide nombre, busca y muestra los datos</td><td>list</td><td>Nada</td></tr>
+                <tr><td>11</td><td><code>eliminarMascota(lista)</code></td><td>Pide nombre, busca y elimina con pop()</td><td>list</td><td>Nada</td></tr>
+                <tr><td>12</td><td><code>actualizarEstados(lista)</code></td><td>Recorre toda la lista y aplica la regla de 5 años</td><td>list</td><td>Nada</td></tr>
+                <tr><td>13</td><td><code>mostrarMascotas(lista)</code></td><td>Muestra todas las mascotas registradas</td><td>list</td><td>Nada</td></tr>
+                <tr style="background-color:#e8f5e9;"><td>—</td><td><strong>Ciclo while</strong></td><td>Llama a mostrarMenu + leerOpcion en cada vuelta</td><td>—</td><td>—</td></tr>
+            </tbody>
+        </table>
+
+        <div class="warning-box">
+            <span class="box-title">⚠️ Regla fundamental del EFT</span>
+            <strong>Todo va dentro de un <code>def</code></strong>, incluyendo el menú. Lo único que va fuera de las funciones es el ciclo <code>while opcion != 6</code> del programa principal. Si escribes código de acción fuera de un <code>def</code>, pierdes puntos.
+        </div>
+    </div>
+
+    <!-- ===== PASO 0 VARIABLES ===== -->
+    <div class="section-divider"><div class="sec-num">5</div> Variables del programa</div>
+
+    <div class="card">
+        <span class="badge">PASO 0</span>
+        <h2>Declarar antes de cualquier <code>def</code></h2>
+        <pre><span class="cm"># Variables del programa — ANTES de cualquier def</span>
+<span class="var">listaMascotas</span> <span class="op">=</span> []
+<span class="var">opcion</span>        <span class="op">=</span> <span class="nm">0</span></pre>
+
+        <div class="why-box">
+            <span class="box-title">🔵 ¿Por qué estas dos variables van fuera de todo?</span>
+            <ul>
+                <li><code>listaMascotas = []</code> es el "archivador vacío" donde se guardarán todas las fichas. Existe desde que el programa parte y sobrevive durante toda la ejecución. Si lo declararas dentro de una función, cada vez que se llame esa función empezaría vacío de nuevo y se perdería todo lo ingresado.</li>
+                <li><code>opcion = 0</code> controla el ciclo <code>while</code>. Debe empezar en 0 (cualquier valor distinto de 6) para que el ciclo entre a la primera vuelta. Si no existiera antes del <code>while</code>, Python no sabría qué comparar en <code>opcion != 6</code>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ===== FUNCIONES MENÚ ===== -->
+    <div class="section-divider"><div class="sec-num">6</div> Funciones de menú</div>
+
+    <div class="card">
+
+        <div class="fn-block">
+            <div class="fn-header">
+                <div class="fn-num">1</div>
+                mostrarMenu() — No recibe nada, no retorna nada
+            </div>
+            <div class="fn-body">
+<pre><span class="kw">def</span> <span class="fn">mostrarMenu</span>():
+    <span class="bi">print</span>(<span class="st">"========== MENU PRINCIPAL =========="</span>)
+    <span class="bi">print</span>(<span class="st">"1. Agregar mascota"</span>)
+    <span class="bi">print</span>(<span class="st">"2. Buscar mascota"</span>)
+    <span class="bi">print</span>(<span class="st">"3. Eliminar mascota"</span>)
+    <span class="bi">print</span>(<span class="st">"4. Actualizar estado de atencion"</span>)
+    <span class="bi">print</span>(<span class="st">"5. Mostrar todas las mascotas"</span>)
+    <span class="bi">print</span>(<span class="st">"6. Salir"</span>)
+    <span class="bi">print</span>(<span class="st">"====================================="</span>)</pre>
+                <div class="tip-box">
+                    <span class="box-title">💡 Una función, una sola responsabilidad</span>
+                    Esta función <strong>solo imprime</strong>. No lee nada del teclado, no valida nada, no guarda nada. Si el día de mañana quieres cambiar el texto del menú, solo tocas aquí. El resto del programa no necesita cambiar.
+                </div>
+            </div>
+        </div>
+
+        <div class="fn-block">
+            <div class="fn-header">
+                <div class="fn-num">2</div>
+                leerOpcion() — No recibe nada, retorna int validado (1 a 6)
+            </div>
+            <div class="fn-body">
+<pre><span class="kw">def</span> <span class="fn">leerOpcion</span>():
+    <span class="var">opcionTexto</span>     <span class="op">=</span> <span class="st">""</span>
+    <span class="var">opcionIngresada</span> <span class="op">=</span> <span class="nm">0</span>
+
+    <span class="kw">while</span> <span class="bi">True</span>:
+        <span class="var">opcionTexto</span> <span class="op">=</span> <span class="bi">input</span>(<span class="st">"Ingrese su opcion: "</span>)
+
+        <span class="kw">if</span> <span class="var">opcionTexto</span>.<span class="fn">isdigit</span>():
+            <span class="var">opcionIngresada</span> <span class="op">=</span> <span class="bi">int</span>(<span class="var">opcionTexto</span>)
+
+            <span class="kw">if</span> <span class="var">opcionIngresada</span> <span class="op">&gt;=</span> <span class="nm">1</span> <span class="kw">and</span> <span class="var">opcionIngresada</span> <span class="op">&lt;=</span> <span class="nm">6</span>:
+                <span class="kw">break</span>
+            <span class="kw">else</span>:
+                <span class="bi">print</span>(<span class="st">"Opcion fuera de rango. Ingrese un numero entre 1 y 6."</span>)
+        <span class="kw">else</span>:
+            <span class="bi">print</span>(<span class="st">"Opcion invalida. Ingrese solo numeros."</span>)
+
+    <span class="kw">return</span> <span class="var">opcionIngresada</span></pre>
+
+                <div class="info-box">
+                    <span class="box-title">📌 El patrón while True + isdigit() + break — léelo así</span>
+                    <ol>
+                        <li>El ciclo entra siempre (<code>while True</code> nunca falla).</li>
+                        <li>Se pide un texto con <code>input()</code>. El resultado es <strong>siempre texto</strong>, aunque el usuario escriba "3".</li>
+                        <li><code>isdigit()</code> verifica que ese texto sea solo dígitos (0-9). Bloquea letras, puntos, guiones y espacios.</li>
+                        <li>Si pasa la prueba, se convierte a número entero con <code>int()</code> y se verifica el rango 1–6.</li>
+                        <li>Si el rango está bien, <code>break</code> sale del ciclo.</li>
+                        <li><code>return</code> entrega el número ya validado al código que llamó a esta función.</li>
+                    </ol>
+                </div>
+                <div class="error-box">
+                    <span class="box-title">❌ El error más grave: convertir antes de validar</span>
+                    Nunca escribas <code>int(input("Ingrese su opcion: "))</code>. Si el usuario escribe <code>"hola"</code>, Python intenta convertir esa letra a número y el programa se cae con un error. Siempre: primero <code>input()</code>, luego <code>isdigit()</code>, y recién después <code>int()</code>.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== VALIDACIONES ===== -->
+    <div class="section-divider"><div class="sec-num">7</div> Funciones de validación</div>
+
+    <div class="card">
+        <span class="badge">PATRÓN OBLIGATORIO</span>
+        <h2>Reciben un dato, retornan True o False. Nunca imprimen mensajes.</h2>
+
+        <p>
+            Las funciones de validación tienen una regla muy importante: su único trabajo es revisar si un dato es válido y retornar <code>True</code> o <code>False</code>. Los mensajes de error al usuario <strong>no van aquí</strong> — van en <code>agregarMascota</code>, que es quien llama a estas funciones.
+        </p>
+
+        <div class="think-box">
+            <span class="box-title">🤔 ¿Por qué separar "validar" de "mostrar el error"?</span>
+            Imagina que en el futuro quieres reutilizar <code>validarNombre</code> en otra parte del programa. Si el mensaje de error estuviera dentro de la función, aparecería en todos lados aunque no quisieras. Al separar responsabilidades, la función valida y quien la llama decide qué mensaje mostrar. Es más flexible y más fácil de mantener.
+        </div>
+
+        <div class="info-box">
+            <span class="box-title">📌 Patrón de validación — siempre igual</span>
+            <pre style="margin:8px 0; background-color:#1e1e1e;"><span class="kw">def</span> <span class="fn">validarAlgo</span>(<span class="var">valor</span>):
+    <span class="var">esValido</span> <span class="op">=</span> <span class="kw">False</span>          <span class="cm"># arranca asumiendo que es inválido</span>
+    <span class="kw">if</span> &lt;condición cumplida&gt;:
+        <span class="var">esValido</span> <span class="op">=</span> <span class="kw">True</span>      <span class="cm"># solo cambia si cumple la regla</span>
+    <span class="kw">return</span> <span class="var">esValido</span></pre>
+        </div>
+
+        <div class="fn-block">
+            <div class="fn-header"><div class="fn-num">3</div> validarNombre(nombre) — No vacío ni solo espacios</div>
+            <div class="fn-body">
+<pre><span class="kw">def</span> <span class="fn">validarNombre</span>(<span class="var">nombre</span>):
+    <span class="var">esValido</span> <span class="op">=</span> <span class="kw">False</span>
+
+    <span class="kw">if</span> <span class="var">nombre</span>.<span class="fn">strip</span>() <span class="op">!=</span> <span class="st">""</span>:
+        <span class="var">esValido</span> <span class="op">=</span> <span class="kw">True</span>
+
+    <span class="kw">return</span> <span class="var">esValido</span></pre>
+                <div class="tip-box">
+                    <span class="box-title">💡 ¿Para qué sirve strip()?</span>
+                    <code>strip()</code> elimina los espacios del inicio y del final de un texto. Si el usuario presiona Enter sin escribir nada, obtienes <code>""</code>. Si presiona varios espacios y Enter, obtienes <code>"   "</code>. Sin <code>strip()</code>, ese segundo caso pasaría la validación porque <code>"   " != ""</code> es <code>True</code>. Con <code>strip()</code>, se elimina y queda <code>""</code>, que sí falla correctamente.
+                </div>
+            </div>
+        </div>
+
+        <div class="fn-block">
+            <div class="fn-header"><div class="fn-num">4</div> validarEspecie(especie) — Solo Perro, Gato o Ave</div>
+            <div class="fn-body">
+<pre><span class="kw">def</span> <span class="fn">validarEspecie</span>(<span class="var">especie</span>):
+    <span class="var">esValido</span> <span class="op">=</span> <span class="kw">False</span>
+
+    <span class="var">especieNormalizada</span> <span class="op">=</span> <span class="var">especie</span>.<span class="fn">strip</span>().<span class="fn">capitalize</span>()
+
+    <span class="kw">if</span> <span class="var">especieNormalizada</span> <span class="op">==</span> <span class="st">"Perro"</span> <span class="kw">or</span> <span class="var">especieNormalizada</span> <span class="op">==</span> <span class="st">"Gato"</span> <span class="kw">or</span> <span class="var">especieNormalizada</span> <span class="op">==</span> <span class="st">"Ave"</span>:
+        <span class="var">esValido</span> <span class="op">=</span> <span class="kw">True</span>
+
+    <span class="kw">return</span> <span class="var">esValido</span></pre>
+                <div class="tip-box">
+                    <span class="box-title">💡 capitalize() hace la comparación justa para el usuario</span>
+                    Sin <code>capitalize()</code>, si el usuario escribe <code>"perro"</code> o <code>"PERRO"</code>, la comparación con <code>"Perro"</code> falla. Con <code>capitalize()</code>, todo se convierte a "primera letra mayúscula, resto minúscula" antes de comparar. Así el usuario puede escribir de cualquier forma y el programa lo acepta.
+                </div>
+            </div>
+        </div>
+
+        <div class="fn-block">
+            <div class="fn-header"><div class="fn-num">5</div> validarEdad(edad) — Entero mayor a 0</div>
+            <div class="fn-body">
+<pre><span class="kw">def</span> <span class="fn">validarEdad</span>(<span class="var">edad</span>):
+    <span class="var">esValido</span> <span class="op">=</span> <span class="kw">False</span>
+
+    <span class="kw">if</span> <span class="var">edad</span>.<span class="fn">isdigit</span>():
+        <span class="var">edad</span> <span class="op">=</span> <span class="bi">int</span>(<span class="var">edad</span>)
+
+        <span class="kw">if</span> <span class="var">edad</span> <span class="op">&gt;</span> <span class="nm">0</span>:
+            <span class="var">esValido</span> <span class="op">=</span> <span class="kw">True</span>
+
+    <span class="kw">return</span> <span class="var">esValido</span></pre>
+                <div class="info-box">
+                    <span class="box-title">📌 Dos validaciones en cadena</span>
+                    Primero <code>isdigit()</code> verifica que el texto sea un número entero (bloquea letras, punto decimal, negativos). Solo si esa prueba pasa, se convierte con <code>int()</code> y se verifica que sea mayor a 0. Las dos condiciones deben cumplirse.
+                </div>
+            </div>
+        </div>
+
+        <div class="fn-block">
+            <div class="fn-header"><div class="fn-num">6</div> validarPeso(peso) — Decimal mayor a 0.0</div>
+            <div class="fn-body">
+<pre><span class="kw">def</span> <span class="fn">validarPeso</span>(<span class="var">peso</span>):
+    <span class="var">esValido</span> <span class="op">=</span> <span class="kw">False</span>
+
+    <span class="kw">try</span>:
+        <span class="var">peso</span> <span class="op">=</span> <span class="bi">float</span>(<span class="var">peso</span>)
+
+        <span class="kw">if</span> <span class="var">peso</span> <span class="op">&gt;</span> <span class="nm">0.0</span>:
+            <span class="var">esValido</span> <span class="op">=</span> <span class="kw">True</span>
+
+    <span class="kw">except</span> <span class="bi">ValueError</span>:
+        <span class="var">esValido</span> <span class="op">=</span> <span class="kw">False</span>
+
+    <span class="kw">return</span> <span class="var">esValido</span></pre>
+                <div class="why-box">
+                    <span class="box-title">🔵 ¿Por qué aquí uso try/except y no isdigit()?</span>
+                    <code>isdigit()</code> revisa carácter por carácter y falla si encuentra un punto. El texto <code>"12.5"</code> tiene un punto, así que <code>"12.5".isdigit()</code> retorna <code>False</code>, aunque sea un peso perfectamente válido. Para decimales siempre se usa <code>try: float(x)</code>. Si el texto no puede convertirse a decimal (por ejemplo <code>"hola"</code>), Python lanza un <code>ValueError</code> y el bloque <code>except</code> lo captura sin que el programa se caiga.
+                </div>
+            </div>
+        </div>
+
+        <div class="fn-block">
+            <div class="fn-header"><div class="fn-num">7</div> validarEsterilizado(respuesta) — "s" o "n"</div>
+            <div class="fn-body">
+<pre><span class="kw">def</span> <span class="fn">validarEsterilizado</span>(<span class="var">respuesta</span>):
+    <span class="var">esValido</span> <span class="op">=</span> <span class="kw">False</span>
+
+    <span class="var">respuestaNormalizada</span> <span class="op">=</span> <span class="var">respuesta</span>.<span class="fn">strip</span>().<span class="fn">lower</span>()
+
+    <span class="kw">if</span> <span class="var">respuestaNormalizada</span> <span class="op">==</span> <span class="st">"s"</span> <span class="kw">or</span> <span class="var">respuestaNormalizada</span> <span class="op">==</span> <span class="st">"n"</span>:
+        <span class="var">esValido</span> <span class="op">=</span> <span class="kw">True</span>
+
+    <span class="kw">return</span> <span class="var">esValido</span></pre>
+                <div class="tip-box">
+                    <span class="box-title">💡 lower() para no castigar al usuario por mayúsculas</span>
+                    <code>lower()</code> convierte todo a minúsculas. Así <code>"S"</code>, <code>"s"</code> o <code>"S "</code> quedan todos como <code>"s"</code> antes de comparar. El usuario puede escribir como quiera y el programa lo acepta.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== BÚSQUEDA ===== -->
+    <div class="section-divider"><div class="sec-num">8</div> Función de búsqueda</div>
+
+    <div class="card">
+        <div class="fn-block">
+            <div class="fn-header"><div class="fn-num">8</div> buscarMascota(listaMascotas, nombre) — Retorna la posición o -1</div>
+            <div class="fn-body">
+                <p style="margin-top:0;">Esta función recorre la lista buscando una mascota por nombre. Si la encuentra, retorna en qué posición está (0, 1, 2…). Si no la encuentra, retorna <code>-1</code>. El número <code>-1</code> funciona como una señal de "no encontrado" porque no puede ser una posición real en una lista.</p>
+
+<pre><span class="kw">def</span> <span class="fn">buscarMascota</span>(<span class="var">listaMascotas</span>, <span class="var">nombre</span>):
+    <span class="var">posicion</span>   <span class="op">=</span> <span class="op">-</span><span class="nm">1</span>       <span class="cm"># resultado por defecto: no encontrado</span>
+    <span class="var">encontrado</span> <span class="op">=</span> <span class="kw">False</span>    <span class="cm"># bandera: se vuelve True al encontrar</span>
+    <span class="var">indice</span>     <span class="op">=</span> <span class="nm">0</span>        <span class="cm"># posición actual en la lista</span>
+
+    <span class="kw">while</span> <span class="var">indice</span> <span class="op">&lt;</span> <span class="bi">len</span>(<span class="var">listaMascotas</span>) <span class="kw">and</span> <span class="var">encontrado</span> <span class="op">==</span> <span class="kw">False</span>:
+
+        <span class="kw">if</span> <span class="var">listaMascotas</span>[<span class="var">indice</span>][<span class="st">"nombre"</span>].<span class="fn">lower</span>() <span class="op">==</span> <span class="var">nombre</span>.<span class="fn">strip</span>().<span class="fn">lower</span>():
+            <span class="var">posicion</span>   <span class="op">=</span> <span class="var">indice</span>
+            <span class="var">encontrado</span> <span class="op">=</span> <span class="kw">True</span>
+
+        <span class="var">indice</span> <span class="op">=</span> <span class="var">indice</span> <span class="op">+</span> <span class="nm">1</span>
+
+    <span class="kw">return</span> <span class="var">posicion</span></pre>
+
+                <div class="info-box">
+                    <span class="box-title">📌 Las 3 variables obligatorias — entiende qué hace cada una</span>
+                    <ul>
+                        <li><strong><code>posicion = -1</code></strong>: el resultado que se devolverá si la búsqueda termina sin encontrar nada. Si se encuentra, se actualiza al índice real.</li>
+                        <li><strong><code>encontrado = False</code></strong>: controla el <code>while</code>. Cuando se halla la mascota, cambia a <code>True</code> y el ciclo para. Sin esto, el ciclo seguiría buscando innecesariamente después de encontrar.</li>
+                        <li><strong><code>indice = 0</code></strong>: el "cursor" que avanza de posición en posición. Empieza en 0 (primera ficha) y sube de uno en uno.</li>
+                    </ul>
+                </div>
+                <div class="tip-box">
+                    <span class="box-title">💡 El while tiene dos condiciones y ambas deben cumplirse</span>
+                    <code>indice &lt; len(listaMascotas)</code> — evita que el cursor se salga de la lista y cause un error. <code>encontrado == False</code> — detiene la búsqueda en cuanto se halla. Las dos condiciones van unidas con <code>and</code>: si alguna falla, el ciclo para.
+                </div>
+                <div class="why-box">
+                    <span class="box-title">🔵 ¿Por qué esta función no imprime nada?</span>
+                    Porque es llamada por <strong>dos funciones distintas</strong>: <code>buscarYMostrarMascota</code> (que muestra un mensaje de éxito) y <code>eliminarMascota</code> (que muestra un mensaje de eliminación). Si los mensajes estuvieran aquí, no podrías controlar qué decir en cada caso. Al retornar solo la posición, cada función decide qué hacer con ese resultado.
+                </div>
+                <div class="error-box">
+                    <span class="box-title">❌ El error más frecuente: return dentro del while</span>
+                    Si pones <code>return posicion</code> dentro del <code>while</code>, la función termina al revisar el primer elemento sin haber buscado en el resto. El <code>return</code> va siempre <strong>fuera</strong> del ciclo, después de que termine toda la búsqueda.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== AGREGAR ===== -->
+    <div class="section-divider"><div class="sec-num">9</div> Agregar, buscar y eliminar</div>
+
+    <div class="card">
+
+        <div class="fn-block">
+            <div class="fn-header"><div class="fn-num">9</div> agregarMascota(listaMascotas) — Pide, valida y agrega la ficha</div>
+            <div class="fn-body">
+                <p style="margin-top:0;">Esta es la función más larga. Su trabajo: pedir todos los datos al usuario, llamar a cada función de validación, y si <strong>todos</strong> son válidos, crear el diccionario y agregarlo a la lista.</p>
+<pre><span class="kw">def</span> <span class="fn">agregarMascota</span>(<span class="var">listaMascotas</span>):
+    <span class="cm"># 1. Pedir todos los datos primero</span>
+    <span class="var">nombre</span>       <span class="op">=</span> <span class="bi">input</span>(<span class="st">"Ingrese nombre de la mascota: "</span>)
+    <span class="var">especie</span>      <span class="op">=</span> <span class="bi">input</span>(<span class="st">"Ingrese especie (Perro / Gato / Ave): "</span>)
+    <span class="var">edad</span>         <span class="op">=</span> <span class="bi">input</span>(<span class="st">"Ingrese edad en anios (entero mayor a 0): "</span>)
+    <span class="var">peso</span>         <span class="op">=</span> <span class="bi">input</span>(<span class="st">"Ingrese peso en kg (numero mayor a 0): "</span>)
+    <span class="var">esterilizado</span> <span class="op">=</span> <span class="bi">input</span>(<span class="st">"Esta esterilizado? (s/n): "</span>)
+
+    <span class="cm"># 2. Validar cada dato con su función</span>
+    <span class="var">nombreValido</span>       <span class="op">=</span> <span class="fn">validarNombre</span>(<span class="var">nombre</span>)
+    <span class="var">especieValida</span>      <span class="op">=</span> <span class="fn">validarEspecie</span>(<span class="var">especie</span>)
+    <span class="var">edadValida</span>         <span class="op">=</span> <span class="fn">validarEdad</span>(<span class="var">edad</span>)
+    <span class="var">pesoValido</span>         <span class="op">=</span> <span class="fn">validarPeso</span>(<span class="var">peso</span>)
+    <span class="var">esterilizadoValido</span> <span class="op">=</span> <span class="fn">validarEsterilizado</span>(<span class="var">esterilizado</span>)
+
+    <span class="cm"># 3. Verificar y mostrar el primer error encontrado</span>
+    <span class="kw">if</span> <span class="var">nombreValido</span> <span class="op">==</span> <span class="kw">False</span>:
+        <span class="bi">print</span>(<span class="st">"Error: el nombre no puede estar vacio."</span>)
+    <span class="kw">elif</span> <span class="var">especieValida</span> <span class="op">==</span> <span class="kw">False</span>:
+        <span class="bi">print</span>(<span class="st">"Error: la especie debe ser Perro, Gato o Ave."</span>)
+    <span class="kw">elif</span> <span class="var">edadValida</span> <span class="op">==</span> <span class="kw">False</span>:
+        <span class="bi">print</span>(<span class="st">"Error: la edad debe ser un numero entero mayor a 0."</span>)
+    <span class="kw">elif</span> <span class="var">pesoValido</span> <span class="op">==</span> <span class="kw">False</span>:
+        <span class="bi">print</span>(<span class="st">"Error: el peso debe ser un numero mayor a 0."</span>)
+    <span class="kw">elif</span> <span class="var">esterilizadoValido</span> <span class="op">==</span> <span class="kw">False</span>:
+        <span class="bi">print</span>(<span class="st">"Error: debe ingresar 's' para si o 'n' para no."</span>)
+    <span class="kw">else</span>:
+        <span class="cm"># 4. Solo si TODO es válido, crear la ficha y agregarla</span>
+        <span class="var">nuevaMascota</span> <span class="op">=</span> {
+            <span class="st">"nombre"</span>      : <span class="var">nombre</span>.<span class="fn">strip</span>(),
+            <span class="st">"especie"</span>     : <span class="var">especie</span>.<span class="fn">strip</span>().<span class="fn">capitalize</span>(),
+            <span class="st">"edad"</span>        : <span class="bi">int</span>(<span class="var">edad</span>),
+            <span class="st">"peso"</span>        : <span class="bi">float</span>(<span class="var">peso</span>),
+            <span class="st">"esterilizado"</span>: <span class="var">esterilizado</span>.<span class="fn">strip</span>().<span class="fn">lower</span>() <span class="op">==</span> <span class="st">"s"</span>,
+            <span class="st">"atendido"</span>    : <span class="kw">False</span>
+        }
+        <span class="var">listaMascotas</span>.<span class="fn">append</span>(<span class="var">nuevaMascota</span>)
+        <span class="bi">print</span>(<span class="st">"Mascota agregada correctamente."</span>)</pre>
+
+                <div class="think-box">
+                    <span class="box-title">🤔 ¿Por qué if/elif y no varios if?</span>
+                    Con <code>elif</code>, si el nombre falla, el programa muestra solo ese error y para. Con múltiples <code>if</code> independientes, el programa mostraría todos los errores a la vez, lo que confunde al usuario. En un menú, es mejor mostrar un error a la vez.
+                </div>
+                <div class="warning-box">
+                    <span class="box-title">⚠️ El diccionario nuevo debe tener un nombre diferente al parámetro</span>
+                    El parámetro se llama <code>listaMascotas</code>. El diccionario nuevo se llama <code>nuevaMascota</code>. Si los nombraras igual, sobreescribirías la referencia a la lista y luego <code>append</code> no agregaría nada donde debería. Siempre un nombre diferente.
+                </div>
+                <div class="tip-box">
+                    <span class="box-title">💡 "esterilizado": esterilizado.strip().lower() == "s"</span>
+                    Esta línea convierte directamente el texto "s"/"n" en un booleano. Si el usuario escribió "s" (o "S", o " s "), la expresión retorna <code>True</code>. Si escribió "n", retorna <code>False</code>. No necesitas un <code>if</code> extra para esto.
+                </div>
+            </div>
+        </div>
+
+        <div class="fn-block">
+            <div class="fn-header"><div class="fn-num">10</div> buscarYMostrarMascota(listaMascotas) — Pide nombre, muestra datos</div>
+            <div class="fn-body">
+<pre><span class="kw">def</span> <span class="fn">buscarYMostrarMascota</span>(<span class="var">listaMascotas</span>):
+    <span class="var">nombre</span>   <span class="op">=</span> <span class="bi">input</span>(<span class="st">"Ingrese nombre de la mascota a buscar: "</span>)
+    <span class="var">posicion</span> <span class="op">=</span> <span class="fn">buscarMascota</span>(<span class="var">listaMascotas</span>, <span class="var">nombre</span>)
+
+    <span class="kw">if</span> <span class="var">posicion</span> <span class="op">!=</span> <span class="op">-</span><span class="nm">1</span>:
+        <span class="var">mascota</span> <span class="op">=</span> <span class="var">listaMascotas</span>[<span class="var">posicion</span>]
+        <span class="bi">print</span>(<span class="st">"--- Mascota encontrada ---"</span>)
+        <span class="bi">print</span>(<span class="st">"Nombre:       "</span> <span class="op">+</span> <span class="var">mascota</span>[<span class="st">"nombre"</span>])
+        <span class="bi">print</span>(<span class="st">"Especie:      "</span> <span class="op">+</span> <span class="var">mascota</span>[<span class="st">"especie"</span>])
+        <span class="bi">print</span>(<span class="st">"Edad:         "</span> <span class="op">+</span> <span class="bi">str</span>(<span class="var">mascota</span>[<span class="st">"edad"</span>]) <span class="op">+</span> <span class="st">" anios"</span>)
+        <span class="bi">print</span>(<span class="st">"Peso:         "</span> <span class="op">+</span> <span class="bi">str</span>(<span class="var">mascota</span>[<span class="st">"peso"</span>]) <span class="op">+</span> <span class="st">" kg"</span>)
+        <span class="bi">print</span>(<span class="st">"Esterilizado: "</span> <span class="op">+</span> (<span class="st">"Si"</span> <span class="kw">if</span> <span class="var">mascota</span>[<span class="st">"esterilizado"</span>] <span class="kw">else</span> <span class="st">"No"</span>))
+        <span class="bi">print</span>(<span class="st">"Atendido:     "</span> <span class="op">+</span> (<span class="st">"Si"</span> <span class="kw">if</span> <span class="var">mascota</span>[<span class="st">"atendido"</span>] <span class="kw">else</span> <span class="st">"No"</span>))
+    <span class="kw">else</span>:
+        <span class="bi">print</span>(<span class="st">"Mascota no encontrada."</span>)</pre>
+                <div class="tip-box">
+                    <span class="box-title">💡 ¿Qué significa "Si" if mascota["esterilizado"] else "No"?</span>
+                    Es una forma corta de escribir: si el campo es <code>True</code>, mostrar "Si"; si es <code>False</code>, mostrar "No". Lo necesitamos porque no podemos hacer <code>print("Esterilizado: " + True)</code> — Python no puede concatenar texto con booleano directamente.
+                </div>
+            </div>
+        </div>
+
+        <div class="fn-block">
+            <div class="fn-header"><div class="fn-num">11</div> eliminarMascota(listaMascotas) — Busca y elimina con pop()</div>
+            <div class="fn-body">
+<pre><span class="kw">def</span> <span class="fn">eliminarMascota</span>(<span class="var">listaMascotas</span>):
+    <span class="var">nombre</span>   <span class="op">=</span> <span class="bi">input</span>(<span class="st">"Ingrese nombre de la mascota a eliminar: "</span>)
+    <span class="var">posicion</span> <span class="op">=</span> <span class="fn">buscarMascota</span>(<span class="var">listaMascotas</span>, <span class="var">nombre</span>)
+
+    <span class="kw">if</span> <span class="var">posicion</span> <span class="op">!=</span> <span class="op">-</span><span class="nm">1</span>:
+        <span class="var">listaMascotas</span>.<span class="fn">pop</span>(<span class="var">posicion</span>)
+        <span class="bi">print</span>(<span class="st">"Mascota eliminada correctamente."</span>)
+    <span class="kw">else</span>:
+        <span class="bi">print</span>(<span class="st">"Mascota no encontrada."</span>)</pre>
+                <div class="info-box">
+                    <span class="box-title">📌 pop(posicion) elimina el elemento en esa posición</span>
+                    <code>pop(0)</code> elimina el primero, <code>pop(1)</code> el segundo, etc. Como ya tenemos la posición exacta de <code>buscarMascota</code>, se la pasamos directamente. No reimplementamos la búsqueda adentro — la reutilizamos.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== ACTUALIZAR ===== -->
+    <div class="section-divider"><div class="sec-num">10</div> Actualizar estados</div>
+
+    <div class="card">
+        <div class="fn-block">
+            <div class="fn-header"><div class="fn-num">12</div> actualizarEstados(listaMascotas) — Aplica la regla a TODA la lista</div>
+            <div class="fn-body">
+                <p style="margin-top:0;">Esta función recorre <strong>todos</strong> los registros sin excepción y aplica la regla: si la mascota tiene 5 o más años, necesita control geriátrico (<code>atendido = True</code>). Si tiene menos de 5, no lo necesita (<code>atendido = False</code>).</p>
+<pre><span class="kw">def</span> <span class="fn">actualizarEstados</span>(<span class="var">listaMascotas</span>):
+    <span class="var">indice</span> <span class="op">=</span> <span class="nm">0</span>
+
+    <span class="kw">while</span> <span class="var">indice</span> <span class="op">&lt;</span> <span class="bi">len</span>(<span class="var">listaMascotas</span>):
+
+        <span class="kw">if</span> <span class="var">listaMascotas</span>[<span class="var">indice</span>][<span class="st">"edad"</span>] <span class="op">&gt;=</span> <span class="nm">5</span>:
+            <span class="var">listaMascotas</span>[<span class="var">indice</span>][<span class="st">"atendido"</span>] <span class="op">=</span> <span class="kw">True</span>
+        <span class="kw">else</span>:
+            <span class="var">listaMascotas</span>[<span class="var">indice</span>][<span class="st">"atendido"</span>] <span class="op">=</span> <span class="kw">False</span>
+
+        <span class="var">indice</span> <span class="op">=</span> <span class="var">indice</span> <span class="op">+</span> <span class="nm">1</span>   <span class="cm"># SIEMPRE fuera del if/else</span>
+
+    <span class="bi">print</span>(<span class="st">"Estados de atencion actualizados."</span>)</pre>
+
+                <div class="think-box">
+                    <span class="box-title">🤔 ¿Por qué usa while y no dos condiciones como buscarMascota?</span>
+                    <code>buscarMascota</code> para cuando encuentra — por eso usa <code>encontrado == False</code> en la condición. <code>actualizarEstados</code> <strong>no puede parar</strong> — debe revisar y actualizar absolutamente todas las mascotas. Por eso usa solo <code>indice &lt; len(lista)</code>: sigue hasta el final sin excepciones.
+                </div>
+                <div class="error-box">
+                    <span class="box-title">❌ Error muy frecuente: indice dentro del if o del else</span>
+                    Si pones <code>indice = indice + 1</code> dentro del <code>if</code>, cuando la edad es mayor a 5 el índice nunca avanza → el programa queda pegado revisando la misma mascota para siempre (bucle infinito). El incremento va <strong>siempre fuera</strong> del if/else para que avance en todos los casos.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MOSTRAR ===== -->
+    <div class="section-divider"><div class="sec-num">11</div> Mostrar todas las mascotas</div>
+
+    <div class="card">
+        <div class="fn-block">
+            <div class="fn-header"><div class="fn-num">13</div> mostrarMascotas(listaMascotas) — Recorre y muestra todo el registro</div>
+            <div class="fn-body">
+<pre><span class="kw">def</span> <span class="fn">mostrarMascotas</span>(<span class="var">listaMascotas</span>):
+    <span class="kw">if</span> <span class="bi">len</span>(<span class="var">listaMascotas</span>) <span class="op">==</span> <span class="nm">0</span>:
+        <span class="bi">print</span>(<span class="st">"No hay mascotas registradas."</span>)
+    <span class="kw">else</span>:
+        <span class="var">indice</span> <span class="op">=</span> <span class="nm">0</span>
+        <span class="bi">print</span>(<span class="st">"-------- MASCOTAS REGISTRADAS --------"</span>)
+
+        <span class="kw">while</span> <span class="var">indice</span> <span class="op">&lt;</span> <span class="bi">len</span>(<span class="var">listaMascotas</span>):
+            <span class="var">mascota</span> <span class="op">=</span> <span class="var">listaMascotas</span>[<span class="var">indice</span>]
+            <span class="bi">print</span>(<span class="st">"Nombre:       "</span> <span class="op">+</span> <span class="var">mascota</span>[<span class="st">"nombre"</span>])
+            <span class="bi">print</span>(<span class="st">"Especie:      "</span> <span class="op">+</span> <span class="var">mascota</span>[<span class="st">"especie"</span>])
+            <span class="bi">print</span>(<span class="st">"Edad:         "</span> <span class="op">+</span> <span class="bi">str</span>(<span class="var">mascota</span>[<span class="st">"edad"</span>]) <span class="op">+</span> <span class="st">" anios"</span>)
+            <span class="bi">print</span>(<span class="st">"Peso:         "</span> <span class="op">+</span> <span class="bi">str</span>(<span class="var">mascota</span>[<span class="st">"peso"</span>]) <span class="op">+</span> <span class="st">" kg"</span>)
+            <span class="bi">print</span>(<span class="st">"Esterilizado: "</span> <span class="op">+</span> (<span class="st">"Si"</span> <span class="kw">if</span> <span class="var">mascota</span>[<span class="st">"esterilizado"</span>] <span class="kw">else</span> <span class="st">"No"</span>))
+            <span class="bi">print</span>(<span class="st">"Atendido:     "</span> <span class="op">+</span> (<span class="st">"Si"</span> <span class="kw">if</span> <span class="var">mascota</span>[<span class="st">"atendido"</span>] <span class="kw">else</span> <span class="st">"No"</span>))
+            <span class="bi">print</span>(<span class="st">"--------------------------------------"</span>)
+            <span class="var">indice</span> <span class="op">=</span> <span class="var">indice</span> <span class="op">+</span> <span class="nm">1</span></pre>
+                <div class="tip-box">
+                    <span class="box-title">💡 Verificar si la lista está vacía antes de recorrer</span>
+                    Si la lista está vacía y entras directo al <code>while</code>, el ciclo no ejecuta ninguna vuelta (porque <code>0 &lt; 0</code> es <code>False</code>) — no pasa nada malo. Pero el mensaje "No hay mascotas" es mejor experiencia de usuario que un silencio. Siempre verifica primero.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PROGRAMA PRINCIPAL ===== -->
+    <div class="section-divider"><div class="sec-num">12</div> Programa principal</div>
+
+    <div class="card">
+        <div class="fn-block main-block">
+            <div class="fn-header main-header">
+                <div class="fn-num main-num">→</div>
+                Ciclo while — Lo único que va FUERA de las funciones
+            </div>
+            <div class="fn-body main-body">
+<pre><span class="kw">while</span> <span class="var">opcion</span> <span class="op">!=</span> <span class="nm">6</span>:
+    <span class="fn">mostrarMenu</span>()
+    <span class="var">opcion</span> <span class="op">=</span> <span class="fn">leerOpcion</span>()
+
+    <span class="kw">if</span> <span class="var">opcion</span> <span class="op">==</span> <span class="nm">1</span>:
+        <span class="fn">agregarMascota</span>(<span class="var">listaMascotas</span>)
+    <span class="kw">elif</span> <span class="var">opcion</span> <span class="op">==</span> <span class="nm">2</span>:
+        <span class="fn">buscarYMostrarMascota</span>(<span class="var">listaMascotas</span>)
+    <span class="kw">elif</span> <span class="var">opcion</span> <span class="op">==</span> <span class="nm">3</span>:
+        <span class="fn">eliminarMascota</span>(<span class="var">listaMascotas</span>)
+    <span class="kw">elif</span> <span class="var">opcion</span> <span class="op">==</span> <span class="nm">4</span>:
+        <span class="fn">actualizarEstados</span>(<span class="var">listaMascotas</span>)
+    <span class="kw">elif</span> <span class="var">opcion</span> <span class="op">==</span> <span class="nm">5</span>:
+        <span class="fn">mostrarMascotas</span>(<span class="var">listaMascotas</span>)
+
+<span class="bi">print</span>(<span class="st">"Programa finalizado."</span>)</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ERRORES FRECUENTES ===== -->
+    <div class="section-divider"><div class="sec-num">13</div> Errores más comunes en el EFT</div>
+
+    <div class="card">
+        <table>
+            <thead><tr><th>Error</th><th>¿Qué pasa?</th><th>Solución</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td>Escribir código de acción fuera de un <code>def</code></td>
+                    <td>El código se ejecuta una sola vez al iniciar, no cuando el usuario lo pide</td>
+                    <td>Todo va dentro de un <code>def</code>. Solo el <code>while</code> va afuera</td>
+                </tr>
+                <tr>
+                    <td><code>int(input(...))</code> sin validar antes</td>
+                    <td>Si el usuario escribe texto, el programa se cae con un error no controlado</td>
+                    <td>Siempre: <code>input()</code> → <code>isdigit()</code> → <code>int()</code></td>
+                </tr>
+                <tr>
+                    <td>Usar el mismo nombre para la lista y el dict nuevo</td>
+                    <td><code>listaMascotas.append(listaMascotas)</code> — agrega la lista dentro de sí misma</td>
+                    <td>El dict nuevo siempre tiene un nombre diferente: <code>nuevaMascota</code></td>
+                </tr>
+                <tr>
+                    <td><code>return posicion</code> dentro del <code>while</code> en buscarMascota</td>
+                    <td>La función retorna después del primer elemento sin revisar el resto</td>
+                    <td>El <code>return</code> va siempre <strong>fuera</strong> del while</td>
+                </tr>
+                <tr>
+                    <td><code>indice = indice + 1</code> dentro del <code>if</code> en actualizarEstados</td>
+                    <td>Bucle infinito cuando la condición se cumple</td>
+                    <td>El incremento va <strong>fuera</strong> del if/else, siempre</td>
+                </tr>
+                <tr>
+                    <td>Imprimir mensajes dentro de las funciones validar...</td>
+                    <td>La función tiene doble responsabilidad y no se puede reutilizar</td>
+                    <td>Las validaciones solo retornan True/False. Los mensajes van en <code>agregarMascota</code></td>
+                </tr>
+                <tr>
+                    <td><code>posicion != 1</code> en lugar de <code>posicion != -1</code></td>
+                    <td><code>pop(1)</code> elimina el segundo elemento de la lista aunque no sea el buscado</td>
+                    <td>La señal de "no encontrado" es siempre <code>-1</code>, no <code>1</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<footer>
+    <strong>FPY1101 – Fundamentos de Programación</strong> &nbsp;·&nbsp; Duoc UC San Bernardo &nbsp;·&nbsp; 2026-1<br>
+    Guía 21 · Práctica tipo EFT · Código en
+    <a href="https://github.com/ProfeMike-sudo/fpy1101-ejercicios-eft" target="_blank">github.com/ProfeMike-sudo/fpy1101-ejercicios-eft</a>
+</footer>
+
+</body>
+</html>
